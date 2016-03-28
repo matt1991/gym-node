@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>	
+	<public-server>
+		<cookie-secret>ASTRI</cookie-secret>
+		<http-port>8080</http-port>
+		<https-port>8443</https-port>		
+		<session-store>mongodb://localhost:27017/gymsessiondb</session-store>
+	</public-server>
+	<nosql-database>mongodb://localhost:27017/gymdb</nosql-database>
+	<transport-profiles>
+		<registration-email>
+			<from-address>ttndevelopment2015@gmail.com</from-address>
+			<transport>
+				<service>Gmail</service>
+				<auth>
+					<user>ttndevelopment2015@gmail.com</user>
+					<pass>ttn12345</pass>
+				</auth>
+			</transport>
+		</registration-email>
+		<forgot-password-email>
+			<from-address>ttndevelopment2015@gmail.com</from-address>
+			<transport>
+				<service>Gmail</service>
+				<auth>
+					<user>ttndevelopment2015@gmail.com</user>
+					<pass>ttn12345</pass>
+				</auth>
+			</transport>
+		</forgot-password-email>		
+		<system-alert-email>
+			<from-address>ttndevelopment2015@gmail.com</from-address>
+			<transport>
+				<service>Gmail</service>
+				<auth>
+					<user>ttndevelopment2015@gmail.com</user>
+					<pass>ttn12345</pass>
+				</auth>
+			</transport>
+		</system-alert-email>
+	</transport-profiles>
+	<system-alert-receipents>
+		<email-address>matt199101@gmail.com</email-address>
+	</system-alert-receipents>
+</configuration>	
