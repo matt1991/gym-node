@@ -2,7 +2,7 @@ var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 
-var userSchema = new mongoose.Schema({
+var trainerSchema = new mongoose.Schema({
   email: { type: String, lowercase: true, unique: true },
   password: String,
   passwordResetToken: String,
@@ -12,7 +12,7 @@ var userSchema = new mongoose.Schema({
   name: { type: String, default: '' },
   gender: { type: String, default: '' },
   wechat: { type: String, default: '' },
-  usercourse: [{ type: Number, ref: 'UserCourse'}],
+  gym: { type: Number, ref: 'Gym' },
   usertrainer: [{ type: Number, ref: 'UserTrainer'}],
   creationDate: { type: Date, default: Date.now },
   modifiedDate: { type: Date, default: Date.now }
@@ -21,7 +21,7 @@ var userSchema = new mongoose.Schema({
 /**
  * Password hash middleware.
  */
-userSchema.pre('save', function(next) {
+trainerSchema.pre('save', function(next) {
   var user = this;
   if (!user.isModified('password')) {
     return next();
@@ -43,7 +43,7 @@ userSchema.pre('save', function(next) {
 /**
  * Helper method for validating user's password.
  */
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
+trainerSchema.methods.comparePassword = function(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
     if (err) {
       return cb(err);
@@ -55,7 +55,7 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 /**
  * Helper method for getting user's gravatar.
  */
-userSchema.methods.gravatar = function(size) {
+trainerSchema.methods.gravatar = function(size) {
   if (!size) {
     size = 200;
   }
@@ -66,6 +66,6 @@ userSchema.methods.gravatar = function(size) {
   return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
 };
 
-var User = mongoose.model('User', userSchema);
+var Trainer = mongoose.model('Trainer', trainerSchema);
 
-module.exports = User;
+module.exports = Trainer;
