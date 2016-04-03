@@ -23,7 +23,7 @@ module.exports = function(context) {
 	}
 
 	this.createGym = function(gym, cb) {
-		let gym = new Gym({
+		new Gym({
 			name: gym.name,
 			address: gym.address,
     		tel: gym.tel,
@@ -44,7 +44,7 @@ module.exports = function(context) {
 			} else {
 				newGym.name = gym.name?:newGym.name;
 				newGym.address = gym.address?:newGym.address;
-				newGym.tel = gym.tel?:newGym.address;
+				newGym.tel = gym.tel?:newGym.tel;
 				newGym.decs = gym.decs?:newGym.decs;
 				newGym.save(function(err, gym) {
 					if (err) {

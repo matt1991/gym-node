@@ -5,7 +5,8 @@ var CourseSchema = new mongoose.Schema({
 
     name: { type: String, default: '' },
     weeks: {type: Number, default: 0 },
-    time: { type: String, default: '19:00 - 21:00' },
+    startTime: { type: Date, default: Date.now },
+    endTime: { type: Date, default: Date.now },
     fee: { type: Number, default: 200 },
     days: [{ type: Number }],
     lessons: [{ type: Number, ref: 'Lesson'}],

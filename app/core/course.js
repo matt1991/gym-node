@@ -1,5 +1,7 @@
 module.exports = function(context) {
 	var Course = require('../models/Course');
+	var LessonCore = require('./core/lesson');
+	var UserCourseCore = require('./core/usercourse');
 
 	this.getAllCourses = function (cb) {
 		Course.find({status:0}, function(err, courses) {
@@ -23,21 +25,33 @@ module.exports = function(context) {
 	}
 
 	this.createCourse = function(course, cb) {
-		let course = new Course({
+		new Course({
 			name: course.name,
 		    weeks: course.weeks,
-		    time: course.time,
+		    startTime:course.startTime,
+		    endTime:course.endTime,
 		    fee: course.fee,
 		    days: course.days,
-		    lessons: [{ type: Number, ref: 'Lesson'}],
-		    gym: { type: Number, ref: 'Gym'},
-		    usercourse: [{type: Number, ref:'UserCourse' }]，
-		    status: { type: Number, default: 0 },//1 open, 2 closed, 3 finished, -1 delete,
-		}).save(function(err, gym) {
+		    gym: course.gym,
+		    status: 1,//1 open, 2 closed, 3 finished, -1 delete,
+		}).save(function(err, course) {
 			if (err) {
 				return cb(err);
 			} else {
-				return cb(null, gym);
+				LessonCore.createLessons(course, 2, function(err, lessons) {
+					if (err) {
+						return cb(err);
+					} else {
+						course.lessons = lessons;
+						course.save(function(err, course) {
+							if (err) {
+								return cb(err);
+							} else {
+								cb(null, course);
+							}
+						});
+					}
+				});
 			}
 		});
 	}
@@ -48,8 +62,14 @@ module.exports = function(context) {
 				return cb(err);
 			} else {
 				newCourse.name = course.name?:newCourse.name;
-				
-				
+				newCourse.weeks = course.weeks?:newCourse.weeks;
+				newCourse.time = course.time?:newCourse.time;
+				newCourse.fee = course.fee?:newCourse.fee;
+				newCourse.days = course.days?:newCourse.days;
+				newCourse.lessons = course.lessons?:newCourse.lessons;
+				newCourse.gym = course.gym?:newCourse.gym;
+				newCourse.usercourse = course.usercourse?:newCourse.usercourse;
+				newCourse.status = course.status?:newCourse.status;
 				newCourse.save(function(err, course) {
 					if (err) {
 						return cb(err);
@@ -61,21 +81,33 @@ module.exports = function(context) {
 		});
 	}
 
-	this.deleteGym = function(gym, cb) {
-		Gym.findOne({_id: gym._id?:gym}, function(err, gym) {
+	this.deleteCourse = function(course, cb) {
+		Course.findOne({_id: course._id?:course}, function(err, course) {
 			if (err) {
 				return cb(err);
 			} else{
-				gym.status = -1;
-				gym.save(function(err, gym) {
+				course.status = -1;
+				LessonCore.deleteLessons(course._id, function(err, lessons) {
 					if (err) {
 						return cb(err);
-					} else{
-						return cb(null, gym);
+					} else {
+						UserCourseCore.deleteUserCourse(course._id, function(err, usercourses) {
+							if (err) {
+								return cb(err);
+							} else {
+								course.save(function(err, course) {
+									if (err) {
+										return cb(err);
+									} else{
+										return cb(null, course);
+									}
+								});
+							}
+						});
 					}
 				});
 			}
 		});
 	}
 
-}
+} 
