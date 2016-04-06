@@ -1,28 +1,3 @@
-var _ = require('lodash');
-var async = require('async');
-
-/**
- * Split into declaration and initialization for better startup performance.
- */
-var validator;
-var cheerio;
-var graph;
-var LastFmNode;
-var tumblr;
-var foursquare;
-var Github;
-var Twit;
-var stripe;
-var twilio;
-var Linkedin;
-var BitGo;
-var clockwork;
-var paypal;
-var lob;
-var ig;
-var Y;
-var request;
-
 /**
  * GET /api
  * List of API examples.

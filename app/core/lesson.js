@@ -71,6 +71,16 @@ module.exports = function(context) {
 		});
 	}
 
+	this.getLeeson = function(lesson, cb) {
+		Lesson.findOne({_id:lesson.id?:lesson}, function(err, lesson) {
+			if (err) {
+				return cb(err);
+			} else {
+				return cb(null, lesson);
+			}
+		});
+	}
+
 
 
 } 

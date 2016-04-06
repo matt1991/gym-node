@@ -13,7 +13,7 @@ module.exports = function(context) {
 	}
 
 	this.getTrainer = function (id, cb) {
-		Trainer.findOne({_id:id}, function(err, trainer) {
+		Trainer.findOne({_id:id}).populate('gym').exec(function(err, trainer) {
 			if (err) {
 				return cb(err);
 			} else {

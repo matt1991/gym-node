@@ -13,7 +13,7 @@ module.exports = function(context) {
 	}
 
 	this.getUser = function (id, cb) {
-		User.findOne({_id:id}, function(err, user) {
+		User.findOne({_id:id}).populate('usercourse').populate('usertrainer').exec(function(err, user) {
 			if (err) {
 				return cb(err);
 			} else {

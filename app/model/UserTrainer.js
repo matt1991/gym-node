@@ -14,6 +14,6 @@ var UserTrainerSchema = new mongoose.Schema({
 }, { timestamps: { createdAt: 'creationDate', updatedAt: 'modifiedDate' } });
 
 
-var UserTrainer = mongoose.model('Gym', UserTrainerSchema);
+var UserTrainer = mongoose.model('UserTrainer', UserTrainerSchema);
 
 module.exports = UserTrainer;

@@ -2,16 +2,17 @@ var mongoose = require('mongoose');
 
 var ObjectId = Schema.ObjectId;
 
-var UserCourseSchema = new mongoose.Schema({
+var UserLessonSchema = new mongoose.Schema({
 
     user: { type: Number, ref: 'Uesr'},
-    course: { type: Number, ref: 'Course'},
-    userlesson: [{ type: Number, ref: 'UserLesson'}],
+    lesson: { type: Number, ref: 'Lesson'},
+    status: { type: Number, default: 0}, //1 signed /2 missed
+    usercourse: { type: Number, ref: 'UserCourse'},
     creationDate: { type: Date, default: Date.now },
     modifiedDate: { type: Date, default: Date.now }
 }, { timestamps: { createdAt: 'creationDate', updatedAt: 'modifiedDate' } });
 
 
-var UserCourse = mongoose.model('UserCourse', UserCourseSchema);
+var UserLesson = mongoose.model('UserLesson', UserLessonSchema);
 
-module.exports = UserCourse;
+module.exports = UserLesson;

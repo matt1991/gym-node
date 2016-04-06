@@ -14,8 +14,18 @@ module.exports = function(context) {
 
 	}
 
+	this.getCoursesByGym = function(gym, cb) {
+		Course.find({status:0, gym: gym._id?:gym}, function(err, courses) {
+			if (err) {
+				return cb(err);
+			} else {
+				return cb(null, courses);
+			}
+		});
+	}
+
 	this.getCourse = function (id, cb) {
-		Course.findOne({_id:id}, function(err, course) {
+		Course.findOne({_id:id}).populate('lessons').populate('gym').exec(function(err, course) {
 			if (err) {
 				return cb(err);
 			} else {
